@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="Sample suite" verbose="1">
+    <test name="E2E test">
+        <classes>
+            <class name="testcore.scenarios.Sample.Sample"/>
+        </classes>
+    </test>
+</suite>
