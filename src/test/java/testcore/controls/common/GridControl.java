@@ -156,10 +156,4 @@ public class GridControl extends WebControl {
 	public WebElement thisControlElement() throws Exception {
 		return this.getRawWebElement();
 	}
-
-	public void setGridPageSize(String value) throws Exception {
-	    WebElement element = thisControlElement().findElement(By.xpath("parent::*/preceding-sibling::*//li[contains(@class, 'ant-pagination-options')] | .//li[contains(@class, 'ant-pagination-options')]"));
-	    DropdownControl dropdownControl = new DropdownControl(getName(), getPage(), element);
-	    dropdownControl.enterText(value);
-    }
 }
