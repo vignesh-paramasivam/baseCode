@@ -21,11 +21,6 @@ public class DesktopLoginPage extends LoginPage {
     @Override
     public HomePage login() throws Exception {
         assertPageLoad();
-        waitForVisibilityById("user");
-        getTextboxControl("user").enterText(getTestData().get("User"));
-        getTextboxControl("pwd").enterText(getTestData().get("Password"));
-        getButtonControl("btnLogin").click();
-        this.getAgent().getWaiter().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#leftPaneDiv")));
         return new HomePage(getConfig(), getAgent(), getTestData()).createInstance();
     }
 }
