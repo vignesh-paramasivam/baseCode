@@ -13,6 +13,7 @@ import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.SkipException;
 import org.testng.annotations.*;
+import testcore.api.modules.User;
 import testcore.pages.*;
 import utils.DataTable;
 
@@ -101,10 +102,16 @@ public class SupportTest {
 	}
 
 
+	public User apiInitialize() throws Exception {
+		return new User(this.conf, this.agent, this.testData);
+	}
+
+
 	@AfterMethod(alwaysRun = true)
 	public void tearDown(ITestResult result, ITestContext context) throws Exception {
 		logger.info(String.format("Tear down for test method [%s] started.", testName));
 		testCase = testName;
+		if(agent != null) {
 		if (ITestResult.FAILURE == result.getStatus()) {
 			File scrShotFile = agent.takeSnapShot(testName);
 			byte[] scrShot = Files.readAllBytes(scrShotFile.toPath());
@@ -115,7 +122,7 @@ public class SupportTest {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		if(agent != null) { agent.quit(); }
+		 agent.quit(); }
 		logger.info(String.format("Tear down for test method [%s] ended.", testName));
 	}
 
