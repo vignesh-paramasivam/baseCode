@@ -10,10 +10,8 @@ import java.util.Map;
 public class LoginPage extends BasePage {
 
 
-
 	public LoginPage(Configuration conf, IAgent agent, Map<String, String> testData) throws Exception {
 		super(conf, agent, testData);
-		assertPageLoad();
 	}
 
 	public LoginPage createInstance() throws Exception{
@@ -33,9 +31,5 @@ public class LoginPage extends BasePage {
 	@Override
 	public String pageName() {
 		return LoginPage.class.getSimpleName();
-	}
-
-	public HomePage login() throws Exception {
-		return new HomePage(getConfig(), getAgent(), getTestData()).createInstance();
 	}
 }

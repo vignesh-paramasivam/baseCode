@@ -19,7 +19,6 @@ public class HomePage extends BasePage {
 
 	public HomePage(Configuration conf, IAgent agent, Map<String, String> testData) throws Exception {
 		super(conf, agent, testData);
-		assertPageLoad();
 	}
 
 	public HomePage createInstance() throws Exception{

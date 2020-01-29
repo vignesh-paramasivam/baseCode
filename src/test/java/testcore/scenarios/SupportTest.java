@@ -13,6 +13,7 @@ import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.SkipException;
 import org.testng.annotations.*;
+import testcore.api.modules.User;
 import testcore.pages.*;
 import utils.DataTable;
 
@@ -29,7 +30,6 @@ public class SupportTest {
 	protected static Logger logger = AutomationCentral.getLogger();
 	private Configuration conf = null;
 	protected HomePage home;
-	protected LoginPage application;
 	private IAgent agent;
 	private ITestContext context = null;
 	private String testName = null;
@@ -79,26 +79,39 @@ public class SupportTest {
 		}
 		logger.info(String.format("Set up for test method [%s] started.", testName));
 		logger.debug(String.format("Creating agent for %s", this.conf.getPlatform()));
-		agent = AgentFactory.createAgent(this.conf);
-		SessionId sessionId = ((RemoteWebDriver)agent.getWebDriver()).getSessionId();
-		logger.debug("Session ID for test: " + testName + " -----> " + sessionId);
-		agent.getWebDriver().manage().window().maximize();
+		agent = null;
 		logger.debug(String.format("Test Method Name Started :: %s", testName));
-		//<String, String> testData = AutomationCentral.INSTANCE.getTestData(context, testName);
 		if(!testData.isEmpty()){
 			testData.clear();
 		}
 		testData.putAll(listOfHashMap.get(Testcount++));
 		this.testData.put("testName", testName);
-		home = new HomePage(this.conf, agent, testData);
-		application = new LoginPage(this.conf, agent, testData);
 		logger.info(String.format("Set up for test method [%s] ended.", testName));
 	}
+
+
+
+	/*THIS IS THE STARTING POINT OF UI TEST - All test methods should call application() method to start with
+	* e.g. application().login()*/
+	public LoginPage application() throws Exception {
+		agent = AgentFactory.createAgent(this.conf);
+		agent.getWebDriver().manage().window().maximize();
+		SessionId sessionId = ((RemoteWebDriver)agent.getWebDriver()).getSessionId();
+		logger.debug("Session ID for test: " + testName + " -----> " + sessionId);
+		return new LoginPage(this.conf, agent, testData);
+	}
+
+
+	public User apiInitialize() throws Exception {
+		return new User(this.conf, this.agent, this.testData);
+	}
+
 
 	@AfterMethod(alwaysRun = true)
 	public void tearDown(ITestResult result, ITestContext context) throws Exception {
 		logger.info(String.format("Tear down for test method [%s] started.", testName));
 		testCase = testName;
+		if(agent != null) {
 		if (ITestResult.FAILURE == result.getStatus()) {
 			File scrShotFile = agent.takeSnapShot(testName);
 			byte[] scrShot = Files.readAllBytes(scrShotFile.toPath());
@@ -109,7 +122,7 @@ public class SupportTest {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		agent.quit();
+		 agent.quit(); }
 		logger.info(String.format("Tear down for test method [%s] ended.", testName));
 	}
 

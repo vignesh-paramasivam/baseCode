@@ -24,6 +24,11 @@ public abstract class BasePage extends Page {
 		super(config, agent, testData);
 	}
 
+
+	public HomePage login() throws Exception {
+		return new HomePage(getConfig(), getAgent(), getTestData()).createInstance();
+	}
+
 	@Step("Navigate to {menuName}")
 	public AllPages navigateTo(String menuName) throws Exception {
 		WebElement menuTopElement = this.getAgent().getWebDriver().findElement(By.id("jsm"));
