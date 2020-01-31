@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 public class APIUtils {
 
-    private static String baseUrl = "http://xxxyyyzzz.amazonaws.com/api";
+    private static String baseUrl = "https://infer.slanglabs.in";
 
 
     public static Response get(String endPoint, HashMap<String, String> headers) {

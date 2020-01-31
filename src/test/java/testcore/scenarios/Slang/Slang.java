@@ -5,10 +5,17 @@ import testcore.scenarios.SupportTest;
 
 public class Slang extends SupportTest {
 
-    @Test(enabled = true, description = "This is a sample test")
+    @Test(enabled = true, description = "Validate voice input in SlangLabs Web")
     public void SampleTest() throws Exception {
         application().createInstance()
                 .login()
                 .voiceInput();
+    }
+
+
+    @Test(enabled = true, description = "Test to validate speech api")
+    public void ValidateSpeechApi() throws Exception {
+        apiInitialize().validateSpeechText();
+
     }
 }
