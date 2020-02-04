@@ -37,7 +37,7 @@ public class SlangHome extends BaseApi {
         TextToSpeechBuilder textToSpeech = new TextToSpeechBuilder();
         JSONObject jsonObject = textToSpeech
                 .add("textRequest", "text", "What is vax")
-                .add("textRequest;header", "me", "here")
+                .add("textRequest|header", "me", "here")
                 .build();
 
         Response response = APIUtils.post(text2Intent, jsonObject.toString(), headers);

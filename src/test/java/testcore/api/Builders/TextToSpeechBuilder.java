@@ -29,7 +29,7 @@ public class TextToSpeechBuilder {
     }
 
     public TextToSpeechBuilder add(String key_parent, String key, Object value) throws Exception {
-        String[] keys = key_parent.split(";");
+        String[] keys = key_parent.split("\\|");
         JSONObject jObj = jsonObject;
         for(String _key: keys) {
            jObj = jObj.getJSONObject(_key);
