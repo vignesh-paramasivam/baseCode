@@ -1,9 +1,13 @@
 package agent.internal;
 
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public interface IDriverActions {
+
+	AppiumDriver<MobileElement> getMobileDriver() throws Exception;
 
 	WebDriverWait getWaiter();
 

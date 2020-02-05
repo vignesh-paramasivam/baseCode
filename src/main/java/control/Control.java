@@ -3,6 +3,8 @@ package control;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.appium.java_client.MobileBy;
+import io.appium.java_client.MobileElement;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -92,12 +94,15 @@ public abstract class Control implements IControl {
 		//		logger.info("createControl - START");
 		String msg = getControlInfoString(page, name, by);
 		try {
-
-			return createWebElement(page, name, by);
-
+			logger.info("createControl - TRY");
+			if (Platform.isMobilePlatform(page.getPlatform())) {
+				return createMobileElement(page, name, by);
+			} else {
+				return createWebElement(page, name, by);
+			}
 		} catch (Exception e) {
-			//			logger.info("createControl - CATCH");
-			//throwControlCreationException(msg, e);
+			logger.info("createControl - CATCH");
+			throwControlCreationException(msg, e);
 		}
 
 		//logger.info("createControl - END");
@@ -108,19 +113,29 @@ public abstract class Control implements IControl {
 		return new WebControl(name, page, (WebElement) identify(page.getAgent().getWebDriver(), by).get(0));
 	}
 
+	private static IControl createMobileElement(IPage page, String name, Identifier by) throws Exception {
+		return new MobileControl(name, page, (MobileElement) identify(page.getAgent().getMobileDriver(), by).get(0));
+	}
+
 	public IControl getControl(String name) throws Exception {
 		Identifier id = this.getPage().getIdentifier(name);
 		String msg = String.format("Fetching Control %s in %s parent control.", getControlInfoString(page, name, id),
 				this.getName());
 		try {
-			logger.debug(msg);
-
+			if (Platform.isMobilePlatform(platform)) {
+				return this.findMobileElement(name, id);
+			} else {
 			return this.findWebElement(name, id);
+			}
 		} catch (Exception e) {
 			throwChildFetchException(msg, e);
 		}
 
 		return null;
+	}
+
+	private IControl findMobileElement(String name, Identifier by) throws Exception {
+		return new MobileControl(name, page, (MobileElement) identify(this.getRawWebElement(), by).get(0));
 	}
 
 	private IControl findWebElement(String name, Identifier by) throws Exception {
@@ -131,7 +146,11 @@ public abstract class Control implements IControl {
 		String msg = "Creating Controls => " + getControlInfoString(page, name, by);
 		try {
 			logger.debug(msg);
-			return createWebElements(page, name, by);
+			if (Platform.isMobilePlatform(page.getPlatform())) {
+				return createMobileElements(page, name, by);
+			} else {
+				return createWebElements(page, name, by);
+			}
 		} catch (Exception e) {
 			throwControlCreationException(msg, e);
 		}
@@ -148,11 +167,29 @@ public abstract class Control implements IControl {
 		return outList;
 	}
 
+	@SuppressWarnings("unchecked")
+	private static List<IControl> createMobileElements(IPage page, String name, Identifier by) throws Exception {
+		List<IControl> outList = new ArrayList<IControl>();
+		for (MobileElement element : (List<MobileElement>) identify(page.getAgent().getMobileDriver(), by)) {
+			outList.add(new MobileControl(name, page, element));
+		}
+		return outList;
+	}
+
 	public List<IControl> getControls(String name) throws Exception {
 		Identifier id = this.getPage().getIdentifier(name);
 		String msg = String.format("Fetching Control %s in %s parent control.", getControlInfoString(page, name, id),
 				this.getName());
-		return this.findWebElements(name, id);
+		try {
+			if (Platform.isMobilePlatform(platform)) {
+				return this.findMobileElements(name, id);
+			} else {
+				return this.findWebElements(name, id);
+			}
+		} catch (Exception e) {
+			throwChildFetchException(msg, e);
+		}
+		return null;
 
 	}
 
@@ -161,6 +198,15 @@ public abstract class Control implements IControl {
 		List<IControl> outList = new ArrayList<IControl>();
 		for (WebElement element : (List<WebElement>) identify(this.getRawWebElement(), by)) {
 			outList.add(new WebControl(name, page, element));
+		}
+		return outList;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<IControl> findMobileElements(String name, Identifier by) throws Exception {
+		List<IControl> outList = new ArrayList<IControl>();
+		for (MobileElement element : (List<MobileElement>) identify(this.getRawWebElement(), by)) {
+			outList.add(new MobileControl(name, page, element));
 		}
 		return outList;
 	}
@@ -195,6 +241,9 @@ public abstract class Control implements IControl {
 						break;
 					case TAGNAME:
 						elements = finder.findElements(By.tagName(by.getValue()));
+						break;
+					case ACCESSIBILITY:
+						elements = finder.findElements(MobileBy.AccessibilityId(by.getValue()));
 						break;
 					default:
 						String msg = "Wrong identifier passed. Identifier Type : " + by.getIdType();

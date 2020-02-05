@@ -32,4 +32,5 @@ public class LoginPage extends BasePage {
 	public String pageName() {
 		return LoginPage.class.getSimpleName();
 	}
+
 }

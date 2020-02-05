@@ -3,9 +3,7 @@ package testcore.pages.desktop;
 import agent.IAgent;
 import central.Configuration;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import testcore.pages.HomePage;
+import testcore.pages.Home.HomePage;
 import testcore.pages.LoginPage;
 
 import java.util.Map;

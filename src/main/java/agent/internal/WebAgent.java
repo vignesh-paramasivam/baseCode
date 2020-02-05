@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Alert;
@@ -319,5 +321,11 @@ public abstract class WebAgent implements IAgent {
 	public void scrollIntoView(WebElement element) throws Exception {
     	((JavascriptExecutor) this.driver).executeScript("arguments[0].scrollIntoView(true);", element);
     	Thread.sleep(500);
+	}
+
+	@Override
+	public AppiumDriver<MobileElement> getMobileDriver() throws Exception {
+		throwUnsupportedActionException();
+		return null;
 	}
 }

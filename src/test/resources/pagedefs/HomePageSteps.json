@@ -10,5 +10,8 @@
 	},
 	"body": {
 		"DESKTOP_WEB": "id=body"
+	},
+	"micButton": {
+		"ANDROID": "id=in.slanglabs.airtelmock:id/slang_lib_slang_button_v2"
 	}
 }

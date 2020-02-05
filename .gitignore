@@ -5,4 +5,5 @@
 /screenshots/*
 /drivers/*
 automation.iml
-*.iml
+/*.iml
+/apk/*

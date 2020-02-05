@@ -2,10 +2,7 @@ package testcore.pages.desktop;
 
 import agent.IAgent;
 import central.Configuration;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import testcore.controls.common.MenuControl;
-import testcore.pages.*;
+import testcore.pages.Home.HomePage;
 
 import java.util.Map;
 

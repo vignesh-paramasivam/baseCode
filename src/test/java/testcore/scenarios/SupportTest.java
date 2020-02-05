@@ -14,13 +14,14 @@ import org.testng.ITestResult;
 import org.testng.annotations.*;
 import testcore.api.modules.SlangHome;
 import testcore.pages.*;
+import testcore.pages.Home.HomePage;
+import testcore.pages.Home.Steps.HomePageSteps;
 import utils.DataTable;
 
 import java.io.File;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,12 +93,11 @@ public class SupportTest {
 
 	/*THIS IS THE STARTING POINT OF UI TEST - All test methods should call application() method to start with
 	* e.g. application().login()*/
-	public LoginPage application() throws Exception {
+	public HomePageSteps application() throws Exception {
 		agent = AgentFactory.createAgent(this.conf);
-		agent.getWebDriver().manage().window().maximize();
 		SessionId sessionId = ((RemoteWebDriver)agent.getWebDriver()).getSessionId();
 		logger.debug("Session ID for test: " + testName + " -----> " + sessionId);
-		return new LoginPage(this.conf, agent, testData);
+		return new HomePageSteps(this.conf, agent, testData);
 	}
 
 
