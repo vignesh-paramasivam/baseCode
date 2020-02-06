@@ -1,9 +1,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
-<suite name="Sample suite" verbose="1">
-    <test name="E2E test">
+<suite name="Slang - Airtel App" verbose="1">
+    <test name="Voice Inputs">
         <classes>
-            <class name="testcore.scenarios.Sample.Sample"/>
+            <class name="testcore.scenarios.Slang.Slang"/>
         </classes>
     </test>
 </suite>
