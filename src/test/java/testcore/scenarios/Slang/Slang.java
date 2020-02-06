@@ -18,10 +18,15 @@ public class Slang extends SupportTest {
 
     }
 
-    @Test(enabled = true, description = "Validate page navigation using voice inputs")
-    public void ValidatePageNavigationOnVoiceInput() throws Exception {
-        application()//.validateVoiceNavigationHindi();
+    @Test(enabled = true, description = "Validate airtel app with English Voice")
+    public void airtelAppEnglish() throws Exception {
+        application()
         .validateVoiceNavigation();
+    }
+
+    @Test(enabled = true, description = "Validate airtel app with Hindi Voice")
+    public void airtelAppHindi() throws Exception {
+        application().validateVoiceNavigationHindi();
     }
 
 }
