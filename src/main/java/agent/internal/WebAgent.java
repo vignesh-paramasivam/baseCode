@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.android.AndroidDriver;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Alert;
@@ -324,7 +325,7 @@ public abstract class WebAgent implements IAgent {
 	}
 
 	@Override
-	public AppiumDriver<MobileElement> getMobileDriver() throws Exception {
+	public AndroidDriver<MobileElement> getMobileDriver() throws Exception {
 		throwUnsupportedActionException();
 		return null;
 	}

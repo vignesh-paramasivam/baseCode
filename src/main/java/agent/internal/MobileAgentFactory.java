@@ -12,6 +12,7 @@ import enums.ConfigType;
 import enums.Platform;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.remote.IOSMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.apache.log4j.Logger;
@@ -26,7 +27,7 @@ public class MobileAgentFactory {
 	private static Logger logger = AutomationCentral.getLogger();
 
 	public static IAgent createAgent(Configuration config) throws Exception {
-		AppiumDriver<MobileElement> driver = null;
+		AndroidDriver<MobileElement> driver = null;
 		DesiredCapabilities caps = null;
 		Platform platform = config.getPlatform();
 		logger.debug("Populating desired capabilities for : " + platform);
@@ -50,7 +51,7 @@ public class MobileAgentFactory {
 		initCaps(config, caps);
 		populatePlatformSpecificCaps(config, caps);
 		logger.debug("Creating mobile driver." + caps.asMap());
-		driver = new AppiumDriver<MobileElement>(new URL(System.getProperty("appium_url")), caps);
+		driver = new AndroidDriver<MobileElement>(new URL(System.getProperty("appium_url")), caps);
 		logger.debug("Successfully created mobile driver.");
 		switch (platform) {
 		case IOS:

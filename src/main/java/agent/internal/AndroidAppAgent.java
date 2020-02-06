@@ -3,10 +3,11 @@ package agent.internal;
 import central.Configuration;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.android.AndroidDriver;
 
 public class AndroidAppAgent extends AndroidAgent {
 
-	public AndroidAppAgent(Configuration config, AppiumDriver<MobileElement> driver) throws Exception {
+	public AndroidAppAgent(Configuration config, AndroidDriver<MobileElement> driver) throws Exception {
 		super(config, driver);
 	}
 

@@ -7,17 +7,18 @@ import enums.MobileView;
 import enums.Platform;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.Dimension;
 
 import java.util.Set;
 
 public abstract class MobileAgent extends WebAgent {
-	private AppiumDriver<MobileElement> driver;
+	private AndroidDriver<MobileElement> driver;
 	private Long swipeWait;
 	private Float swipeTopFraction;
 	private Float swipeDownFraction;
 
-	public MobileAgent(Configuration config, AppiumDriver<MobileElement> driver) throws Exception {
+	public MobileAgent(Configuration config, AndroidDriver<MobileElement> driver) throws Exception {
 		super(config, driver);
 		this.driver = driver;
 		swipeWait = Long.parseLong(config.getValue(ConfigType.SWIPE_WAIT));
@@ -25,7 +26,7 @@ public abstract class MobileAgent extends WebAgent {
 		swipeDownFraction = Float.parseFloat(config.getValue(ConfigType.SWIPE_DOWN_FRACTION));
 	}
 
-	public AppiumDriver<MobileElement> getMobileDriver() {
+	public AndroidDriver<MobileElement> getMobileDriver() {
 		return this.driver;
 	}
 

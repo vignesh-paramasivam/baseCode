@@ -18,9 +18,9 @@ public class Slang extends SupportTest {
 
     }
 
-    @Test(enabled = true, description = "Validate mobile test")
-    public void mobileTest() throws Exception {
-        application()
+    @Test(enabled = true, description = "Validate page navigation using voice inputs")
+    public void ValidatePageNavigationOnVoiceInput() throws Exception {
+        application()//.validateVoiceNavigationHindi();
         .validateVoiceNavigation();
     }
 
