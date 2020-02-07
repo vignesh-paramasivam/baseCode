@@ -2,17 +2,10 @@ package testcore.pages.Home.Steps;
 
 import agent.IAgent;
 import central.Configuration;
-import com.google.common.primitives.Bytes;
-import in.co.gauravtiwari.voice.client.VoiceAutomationClient;
-import in.co.gauravtiwari.voice.clientresources.Voice;
-import in.co.gauravtiwari.voice.design.Language;
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
 import org.apache.commons.codec.binary.Base64;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import testcore.pages.Home.HomePage;
-import io.appium.java_client.android.*;
 
 import java.util.Map;
 
@@ -41,19 +34,17 @@ public class HomePageSteps extends HomePage {
 			Thread.sleep(2000);
 
 			if(firstTry) {
-				Thread.sleep(3000);
 				getControl("micSetupPopup").click();
 				takeSnapShot();
-				Thread.sleep(3000);
 				getControl("langSelectNext").click();
 				takeSnapShot();
 				Thread.sleep(7000);
-				takeSnapShot();
 				firstTry = false;
 				continue;
 			}
 
 			takeSnapShot();
+			waitForMicButton();
 			getControl("micButton").click();
 			takeSnapShot();
 			Thread.sleep(7000);
@@ -72,14 +63,11 @@ public class HomePageSteps extends HomePage {
 			Thread.sleep(2000);
 
 			if(firstTry) {
-				Thread.sleep(3000);
 				getControl("micSetupPopup").click();
 				takeSnapShot();
-				Thread.sleep(3000);
 				getControls("langHindi").get(1).click();
 				takeSnapShot();
-				Thread.sleep(3000);
-				getControl("micButton").waitUntilVisible();
+				waitForMicButton();
 				getControl("micButton").click();
 				takeSnapShot();
 				Thread.sleep(7000);
@@ -88,11 +76,15 @@ public class HomePageSteps extends HomePage {
 			}
 
 			takeSnapShot();
-			getControl("micButton").waitUntilVisible();
+			waitForMicButton();
 			getControl("micButton").click();
 			takeSnapShot();
 			Thread.sleep(7000);
 			takeSnapShot();
 		}
+	}
+
+	private void waitForMicButton() throws Exception {
+		waiter().until(ExpectedConditions.elementToBeClickable(By.id("in.slanglabs.airtelmock:id/slang_lib_slang_button_v2")));
 	}
 }

@@ -112,7 +112,13 @@ public class SupportTest {
 		testCase = testName;
 		if(agent != null) {
 		if (ITestResult.FAILURE == result.getStatus()) {
-			File scrShotFile = agent.takeSnapShot(testName);
+			File scrShotFile;
+			if(this.conf.getPlatform().equals("ANDROID")) {
+				scrShotFile = agent.takeSnapShot();
+			} else {
+				scrShotFile = agent.takeSnapShot(testName);
+			}
+
 			byte[] scrShot = Files.readAllBytes(scrShotFile.toPath());
 			attachScreenshotAllure(scrShot);
 		}
