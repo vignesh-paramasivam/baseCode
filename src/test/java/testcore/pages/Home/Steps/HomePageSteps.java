@@ -43,14 +43,19 @@ public class HomePageSteps extends HomePage {
 			if(firstTry) {
 				Thread.sleep(3000);
 				getControl("micSetupPopup").click();
+				takeSnapShot();
 				Thread.sleep(3000);
 				getControl("langSelectNext").click();
+				takeSnapShot();
 				Thread.sleep(7000);
+				takeSnapShot();
 				firstTry = false;
 				continue;
 			}
 
+			takeSnapShot();
 			getControl("micButton").click();
+			takeSnapShot();
 			Thread.sleep(7000);
 		}
 	}
@@ -69,19 +74,25 @@ public class HomePageSteps extends HomePage {
 			if(firstTry) {
 				Thread.sleep(3000);
 				getControl("micSetupPopup").click();
+				takeSnapShot();
 				Thread.sleep(3000);
 				getControls("langHindi").get(1).click();
+				takeSnapShot();
 				Thread.sleep(3000);
 				getControl("micButton").waitUntilVisible();
 				getControl("micButton").click();
+				takeSnapShot();
 				Thread.sleep(7000);
 				firstTry = false;
 				continue;
 			}
 
+			takeSnapShot();
 			getControl("micButton").waitUntilVisible();
 			getControl("micButton").click();
+			takeSnapShot();
 			Thread.sleep(7000);
+			takeSnapShot();
 		}
 	}
 }
