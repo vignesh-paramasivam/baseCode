@@ -72,12 +72,14 @@ public class HomePageSteps extends HomePage {
 				Thread.sleep(3000);
 				getControls("langHindi").get(1).click();
 				Thread.sleep(3000);
+				getControl("micButton").waitUntilVisible();
 				getControl("micButton").click();
 				Thread.sleep(7000);
 				firstTry = false;
 				continue;
 			}
 
+			getControl("micButton").waitUntilVisible();
 			getControl("micButton").click();
 			Thread.sleep(7000);
 		}
