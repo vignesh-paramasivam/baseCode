@@ -15,12 +15,18 @@
 		"ANDROID": "id=in.slanglabs.airtelmock:id/slang_lib_slang_button_v2"
 	},
 	"micSetupPopup": {
-		"ANDROID": "id=slang_lib_bubble_description"
+		"ANDROID": "id=in.slanglabs.airtelmock:id/slang_lib_bubble_description"
 	},
 	"langSelectNext": {
 		"ANDROID": "id=in.slanglabs.airtelmock:id/slang_lib_locale_selection_right_arrow"
 	},
 	"langHindi": {
 		"ANDROID": "id=in.slanglabs.airtelmock:id/slang_lib_locale_item_name"
+	},
+	"helpDialog": {
+		"ANDROID": "id=in.slanglabs.airtelmock:id/slang_lib_help_view_help_title"
+	},
+	"pageContainer": {
+		"ANDROID": "id=in.slanglabs.airtelmock:id/slang_lib_help_container"
 	}
 }
