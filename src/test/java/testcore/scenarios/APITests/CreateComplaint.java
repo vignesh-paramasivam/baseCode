@@ -8,7 +8,7 @@ public class CreateComplaint extends SupportTest {
     @Test(enabled = true, description = "Validate complaint creation by citizen")
     public void createComplaint() throws Exception {
         apiInitialize()
-                .generateAuthToken();
-        //TODO: This is inprogress
+                .generateAuthToken()
+                .createComplaint();
     }
 }

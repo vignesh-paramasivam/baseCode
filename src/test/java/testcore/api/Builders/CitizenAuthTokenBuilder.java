@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class CitizenAuthTokenBuilder extends BaseBuilder {
+public class CitizenAuthTokenBuilder {
 
     private String endPoint = "/user/oauth/token";
 
@@ -42,7 +42,7 @@ public class CitizenAuthTokenBuilder extends BaseBuilder {
 
     /*----------default methods--------------*/
 
-    public BaseBuilder add(String key, String value) throws Exception {
+    public CitizenAuthTokenBuilder add(String key, String value) throws Exception {
         formParams.put(key, value);
         return this;
     }
