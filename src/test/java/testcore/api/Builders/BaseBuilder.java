@@ -10,6 +10,10 @@ public class BaseBuilder {
         this.jsonObject = jsonObject;
     }
 
+    protected BaseBuilder() {
+
+    }
+
     public BaseBuilder add(String key, Object value) throws Exception {
         jsonObject.put(key, value);
         return this;

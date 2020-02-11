@@ -13,6 +13,7 @@ import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.SkipException;
 import org.testng.annotations.*;
+import testcore.api.modules.CreateCitizenAuthToken;
 import testcore.api.modules.User;
 import testcore.pages.*;
 import utils.DataTable;
@@ -102,8 +103,8 @@ public class SupportTest {
 	}
 
 
-	public User apiInitialize() throws Exception {
-		return new User(this.conf, this.agent, this.testData);
+	public CreateCitizenAuthToken apiInitialize() throws Exception {
+		return new CreateCitizenAuthToken(this.conf, this.agent, this.testData);
 	}
 
 

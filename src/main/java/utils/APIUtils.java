@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 public class APIUtils {
 
-    private static String baseUrl = "http://xxxyyyzzz.amazonaws.com/api";
+    private static String baseUrl = "https://egov-micro-qa.egovernments.org";
 
 
     public static Response get(String endPoint, HashMap<String, String> headers) {
@@ -17,5 +17,11 @@ public class APIUtils {
 
     public static Response post(String endPoint, String jsonBody, HashMap<String, String> headers) {
         return (RestAssured.given().headers(headers).body(jsonBody).baseUri(baseUrl)).post(endPoint);
+    }
+
+    public static Response post(String endPoint, HashMap<String, String> formParams, HashMap<String, String> headers) {
+        return (RestAssured.given().headers(headers)
+                .formParams(formParams)
+                .baseUri(baseUrl)).post(endPoint);
     }
 }

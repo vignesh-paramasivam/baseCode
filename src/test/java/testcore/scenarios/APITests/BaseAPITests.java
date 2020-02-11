@@ -9,10 +9,10 @@ public class BaseAPITests extends SupportTest {
     @Test(enabled = true, description = "This is a sample test for api")
     public void SampleTestForApi() throws Exception {
         apiInitialize()
-                .validateUser()
+                /*.validateUser()
                 .addDeviceToken()
                 .listPlans()
                 .addToCart()
-                .checkout();
+                .checkout()*/;
     }
 }
