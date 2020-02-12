@@ -36,7 +36,7 @@ public class CitizenComplaintCreationBuilder {
     private JSONObject requestInfo() throws Exception {
         requestInfo = new JSONObject();
 
-        requestInfo.put("appId", "Rainmaker");
+        requestInfo.put("apiId", "Rainmaker");
         requestInfo.put("ver", ".01");
         requestInfo.put("ts", "");
         requestInfo.put( "action", "_create");
@@ -69,7 +69,7 @@ public class CitizenComplaintCreationBuilder {
                         .put("houseNoAndStreetName", "test")
                         .put("landmark", "test"))
                 .put("address", "Jalandhar,Nakodar Rd, Shaheed Udham Singh Nagar, Jalandhar, Punjab 144001, India")
-                .put("tenantId", "pb.jalandha")
+                .put("tenantId", "pb.jalandhar")
                 .put("source", "web")
                 .put("phone", "7829727713")
         );
@@ -96,17 +96,37 @@ public class CitizenComplaintCreationBuilder {
     }
 
     public CitizenComplaintCreationBuilder add(String key, JSONObject jsonObject) throws Exception {
-        jsonObject.put(key, jsonObject);
+        this.jsonObject.put(key, jsonObject);
         return this;
     }
 
     public CitizenComplaintCreationBuilder add(String key_parent, String key, Object value) throws Exception {
         String[] keys = key_parent.split("\\|");
-        JSONObject jObj = jsonObject;
+        JSONObject jObjInstance;
+        JSONArray jArrInstance;
+
+        Object jObj = jsonObject;
+
         for(String _key: keys) {
-            jObj = jObj.getJSONObject(_key);
+            // Check if object is JSON array
+            if(((JSONObject) jObj).optJSONArray(_key) != null) {
+                //TODO: get index dynamically based on given condition
+                jObj = ((JSONObject) jObj).getJSONArray(_key).getJSONObject(0);
+            } else if (((JSONObject) jObj).optJSONObject(_key) != null) {
+                jObjInstance = (JSONObject) jObj;
+                jObj = jObjInstance.getJSONObject(_key);
+            }
         }
-        jObj.put(key, value);
+
+        if(jObj instanceof JSONArray) {
+            jArrInstance = (JSONArray)jObj;
+            jArrInstance.getJSONObject(0).put(key, value);
+
+        } else if (jObj instanceof JSONObject){
+            jObjInstance = (JSONObject) jObj;
+            jObjInstance.put(key, value);
+        }
+
         return this;
     }
 

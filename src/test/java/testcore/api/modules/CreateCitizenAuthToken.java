@@ -78,14 +78,14 @@ public class CreateCitizenAuthToken extends BaseApi {
         }};
 
         CitizenComplaintCreationBuilder builder = new CitizenComplaintCreationBuilder();
+
         builder.add("RequestInfo", "authToken", getTestData().get("access_token"));
+        builder.add("services", "source", "web");
+        builder.add("services|addressDetail", "landmark", "test");
 
         Response response = APIUtils.post(builder.getEndPoint(), builder.build().toString(), headers);
 
-
         Assert.assertEquals(response.getStatusCode(), 201);
-
-        //TODO: Resolve this error: {"ResponseInfo":null,"Errors":[{"code":"NullPointerException","message":"An unhandled exception occurred on the server","description":null,"params":null}]}
 
         return thisClass();
     }
