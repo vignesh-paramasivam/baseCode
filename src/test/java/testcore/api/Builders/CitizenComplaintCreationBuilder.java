@@ -1,7 +1,9 @@
 package testcore.api.Builders;
 
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
+import org.codehaus.jettison.json.JSONTokener;
 
 
 public class CitizenComplaintCreationBuilder {
@@ -11,7 +13,7 @@ public class CitizenComplaintCreationBuilder {
     private JSONObject requestInfo;
     private JSONArray actionInfo;
     private JSONArray services;
-    private final JSONObject jsonObject = new JSONObject();
+    private JSONObject jsonObject = new JSONObject();
 
     //Default objects to be added
     public CitizenComplaintCreationBuilder() throws Exception {
@@ -100,34 +102,73 @@ public class CitizenComplaintCreationBuilder {
         return this;
     }
 
+    
+    //If JSONArray value is getting added the Key can be null
     public CitizenComplaintCreationBuilder add(String key_parent, String key, Object value) throws Exception {
         String[] keys = key_parent.split("\\|");
-        JSONObject jObjInstance;
-        JSONArray jArrInstance;
 
         Object jObj = jsonObject;
 
+        JSONObject jObjInstance;
+        JSONArray jArrInstance;
+
         for(String _key: keys) {
             // Check if object is JSON array
-            if(((JSONObject) jObj).optJSONArray(_key) != null) {
-                //TODO: get index dynamically based on given condition
-                jObj = ((JSONObject) jObj).getJSONArray(_key).getJSONObject(0);
+            String[] keyCheck = _key.split("\\{");
+            if(((JSONObject) jObj).optJSONArray(keyCheck[0]) != null) {
+
+                //if we need to get the object inside json array
+                if(keyCheck.length > 1) {
+                    jObj = getKeyInDepth(_key, jObj);
+                } else {
+                    jObj = ((JSONObject) jObj).getJSONArray(_key);
+                }
             } else if (((JSONObject) jObj).optJSONObject(_key) != null) {
                 jObjInstance = (JSONObject) jObj;
                 jObj = jObjInstance.getJSONObject(_key);
             }
         }
 
-        if(jObj instanceof JSONArray) {
-            jArrInstance = (JSONArray)jObj;
-            jArrInstance.getJSONObject(0).put(key, value);
+        Object jSn = new JSONTokener(jObj.toString()).nextValue();
 
-        } else if (jObj instanceof JSONObject){
+        if(jSn instanceof JSONArray) {
+            //TODO: May get class cast exception - need to address
+            jArrInstance = (JSONArray) jObj;
+            jArrInstance.put(value);
+
+        } else if (jSn instanceof JSONObject){
             jObjInstance = (JSONObject) jObj;
             jObjInstance.put(key, value);
         }
-
         return this;
+    }
+
+    private Object getKeyInDepth(String _key, Object Obj) throws Exception {
+        String key = _key.split("\\{")[0];
+        String[] valuesToCheck = StringUtils.substringBetween(_key, "{", "}").split(";");
+        JSONArray tempArr = ((JSONObject) Obj).getJSONArray(key);
+        int availableObjs = ((JSONObject) Obj).getJSONArray(key).length();
+
+        boolean objectPresent = true;
+        Object tempObj = null;
+
+        for(int i = 0; i < availableObjs; i++) {
+            tempObj = tempArr.get(i);
+
+            for (String val: valuesToCheck) {
+              String[] keyVal = val.split(":");
+              //TODO: All values are converted to string and compared. This needs to be validated based on data types
+                if(!((JSONObject) tempObj).opt(keyVal[0]).toString().equals(keyVal[1])){
+                    objectPresent = false;
+                };
+            }
+            if(objectPresent) { return tempObj; }
+        }
+
+        if(tempObj == null) { throw new Exception("Unable to find given values in json array"); }
+
+        return tempObj;
+
     }
 
 }
