@@ -63,13 +63,21 @@ public class CitizenComplaintCreationBuilder {
         services.put(new JSONObject()
                 .put("serviceCode", "GarbageNeedsTobeCleared")
                 .put("description", "test")
-                .put("addressDetail", new JSONObject()
+                .put("addressDetail", new JSONArray().put(new JSONObject()
                         .put("latitude", "31.322422")
                         .put("longitude", "75.573419")
                         .put("city", "pb.jalandhar")
                         .put("mohalla", "JLC216")
                         .put("houseNoAndStreetName", "test")
                         .put("landmark", "test"))
+                        .put(new JSONObject()
+                                        .put("latitude", "21.322422")
+                                        .put("longitude", "21.573419")
+                                        .put("city", "bangalore")
+                                        .put("mohalla", "JLC216")
+                                        .put("houseNoAndStreetName", "123")
+                                        .put("landmark", "123"))
+                        )
                 .put("address", "Jalandhar,Nakodar Rd, Shaheed Udham Singh Nagar, Jalandhar, Punjab 144001, India")
                 .put("tenantId", "pb.jalandhar")
                 .put("source", "web")
@@ -115,13 +123,14 @@ public class CitizenComplaintCreationBuilder {
         for(String _key: keys) {
             // Check if object is JSON array
             String[] keyCheck = _key.split("\\{");
+            //TODO 1: Accessing json arrays inside json array to be done
             if(((JSONObject) jObj).optJSONArray(keyCheck[0]) != null) {
 
                 //if we need to get the object inside json array
                 if(keyCheck.length > 1) {
                     jObj = getKeyInDepth(_key, jObj);
                 } else {
-                    jObj = ((JSONObject) jObj).getJSONArray(_key);
+                    jObj = ((JSONObject) jObj).getJSONArray(_key).get(0);
                 }
             } else if (((JSONObject) jObj).optJSONObject(_key) != null) {
                 jObjInstance = (JSONObject) jObj;
@@ -132,7 +141,7 @@ public class CitizenComplaintCreationBuilder {
         Object jSn = new JSONTokener(jObj.toString()).nextValue();
 
         if(jSn instanceof JSONArray) {
-            //TODO: May get class cast exception - need to address
+            //TODO 2: May get class cast exception - need to address
             jArrInstance = (JSONArray) jObj;
             jArrInstance.put(value);
 
@@ -157,7 +166,7 @@ public class CitizenComplaintCreationBuilder {
 
             for (String val: valuesToCheck) {
               String[] keyVal = val.split(":");
-              //TODO: All values are converted to string and compared. This needs to be validated based on data types
+              //TODO 3: All values are converted to string and compared. This needs to be validated based on data types
                 if(!((JSONObject) tempObj).opt(keyVal[0]).toString().equals(keyVal[1])){
                     objectPresent = false;
                 };

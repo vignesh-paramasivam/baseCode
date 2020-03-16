@@ -81,10 +81,14 @@ public class CreateCitizenAuthToken extends BaseApi {
 
         builder.add("RequestInfo", "authToken", getTestData().get("access_token"));
         builder.add("services", "source", "web");
-        builder.add("services|addressDetail", "landmark", "test");
+        //This throws error now - check todo item 1
+        builder.add("actionInfo|media", "testMedia", "mediaVal");
+
+        builder.add("services|addressDetail{landmark:123}", "testMe", "testVal");
 
         Response response = APIUtils.post(builder.getEndPoint(), builder.build().toString(), headers);
 
+        //With the given jsonBody - assertion will fail - will be addressed after fixing the json body construct
         Assert.assertEquals(response.getStatusCode(), 201);
 
         return thisClass();
