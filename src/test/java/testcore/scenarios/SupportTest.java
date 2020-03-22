@@ -13,6 +13,7 @@ import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.SkipException;
 import org.testng.annotations.*;
+import testcore.api.modules.AllObjTypes;
 import testcore.api.modules.CreateCitizenAuthToken;
 import testcore.api.modules.User;
 import testcore.pages.*;
@@ -107,6 +108,9 @@ public class SupportTest {
 		return new CreateCitizenAuthToken(this.conf, this.agent, this.testData);
 	}
 
+	public AllObjTypes allObjTypes() throws Exception {
+		return new AllObjTypes(this.conf, this.agent, this.testData);
+	}
 
 	@AfterMethod(alwaysRun = true)
 	public void tearDown(ITestResult result, ITestContext context) throws Exception {
