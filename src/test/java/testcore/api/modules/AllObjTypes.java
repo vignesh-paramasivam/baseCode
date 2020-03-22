@@ -35,8 +35,6 @@ public class AllObjTypes extends BaseApi {
 
         builder.add("lastName", "Smith");
         builder.add("age", 25);
-        builder.add("address{postalCode:10021}", "City", "New York");
-
 
         //Output of json up to this level - created using the builder pattern,z
         /*
@@ -59,6 +57,8 @@ public class AllObjTypes extends BaseApi {
                 *
         * */
 
+
+        builder.add("address{postalCode:10021}", "City", "New York");
 
         return thisClass();
     }
