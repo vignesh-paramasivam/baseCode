@@ -81,8 +81,8 @@ public class CreateCitizenAuthToken extends BaseApi {
 
         builder.add("RequestInfo", "authToken", getTestData().get("access_token"));
         builder.add("services", "source", "web");
-        //This throws error now - check todo item 1
-        builder.add("actionInfo|media", "testMedia", "mediaVal");
+        //Refer todo-1 : only identifying 1st object as of now. Here, key is null/ not considered as the value is added as a object in array
+        builder.add("actionInfo|media", "", "mediaVal");
 
         builder.add("services|addressDetail{landmark:123}", "testMe", "testVal");
 
