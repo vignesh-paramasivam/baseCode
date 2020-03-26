@@ -1,9 +1,9 @@
 package testcore.api.Builders;
 
-import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONObject;
-import org.codehaus.jettison.json.JSONTokener;
+import com.jayway.jsonpath.JsonPath;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.testng.Assert;
 
 
@@ -38,14 +38,57 @@ public class AllObjTypesBuilder {
         return this;
     }
 
-    public AllObjTypesBuilder add(String key_parent, String key, Object value) throws Exception {
-        identifyRequiredObject(key_parent);
+    public AllObjTypesBuilder add(String key_parent, String name, Object value) throws Exception {
+        String[] keys = key_parent.split("//|");
+
+        Object obj = jsonObject;
+
+        for (String key: keys){
+            obj = getRequiredObject(key, obj);
+        }
+
         return this;
     }
 
-    private Object identifyRequiredObject(String key_parent) {
-        String[] keys = key_parent.split("\\|");
-        return new Object();
+    private Object getRequiredObject(String key, Object obj) {
+        String[] keyWithFilterValues = key.split("\\{");
+        String keyToFetch = keyWithFilterValues[0];
+
+
+
+        if(isJsonArray(obj)) {
+                getObjFromJsonAry();
+        } else {
+            ((JSONObject)obj).opt(keyToFetch);
+        }
+    }
+
+
+    private Object getObjFromJsonAry(String key) {
+
+    }
+
+    private Object getObjFromJsonObj(String key) {
+
+    }
+
+
+    private boolean isJsonArray(Object obj) {
+        Object thisObj = new JSONTokener(obj.toString()).nextValue();
+        return thisObj instanceof JSONArray;
+    }
+
+    private void addItemToJson(Object jObj, String key, Object value) throws Exception {
+        JSONObject jObjInstance;
+        JSONArray jArrInstance;
+
+        if(isJsonArray(jObj)) {
+            jArrInstance = (JSONArray) jObj;
+            jArrInstance.put(value);
+        } else {
+            jObjInstance = (JSONObject) jObj;
+            jObjInstance.put(key, value);
+        }
     }
 
 }

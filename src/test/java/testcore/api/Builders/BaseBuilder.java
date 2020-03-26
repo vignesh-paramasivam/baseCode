@@ -1,4 +1,5 @@
 package testcore.api.Builders;
+import com.jayway.jsonpath.JsonPath;
 import org.codehaus.jettison.json.JSONObject;
 
 
@@ -32,5 +33,9 @@ public class BaseBuilder {
         }
         jObj.put(key, value);
         return this;
+    }
+
+    public Object readRequiredObjectValues(String jsonString, String jsonPath) {
+        return JsonPath.read(jsonString, jsonPath);
     }
 }

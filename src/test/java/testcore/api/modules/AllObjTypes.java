@@ -2,6 +2,7 @@ package testcore.api.modules;
 
 import agent.IAgent;
 import central.Configuration;
+import com.jayway.jsonpath.JsonPath;
 import io.restassured.response.Response;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
@@ -123,7 +124,7 @@ public class AllObjTypes extends BaseApi {
                 }]
             }*/
 
-        builder.add("address[{postalCode:10021}]", "City", "New York");
+        builder.add("business|car{brand:Toyota}", "type", "mobile");
 
         return thisClass();
     }
