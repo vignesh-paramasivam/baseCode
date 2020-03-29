@@ -1,9 +1,7 @@
 package testcore.api.Builders;
-import javafx.beans.property.MapProperty;
-import org.codehaus.jettison.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
+
 
 
 public class CitizenAuthTokenBuilder {

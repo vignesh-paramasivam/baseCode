@@ -1,15 +1,20 @@
 package testcore.api.Builders;
 
+import com.google.gson.GsonBuilder;
+import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
+import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+import org.codehaus.jettison.json.JSONTokener;
 import org.testng.Assert;
 
 
-public class AllObjTypesBuilder {
+public class AllObjTypesBuilder extends BaseBuilder {
 
     private JSONObject jsonObject = new JSONObject();
+
 
     //Default objects to be added
     public AllObjTypesBuilder() throws Exception {
@@ -33,62 +38,17 @@ public class AllObjTypesBuilder {
         return this;
     }
 
-    public AllObjTypesBuilder add(String key, JSONObject jsonObject) throws Exception {
-        this.jsonObject.put(key, jsonObject);
+    public AllObjTypesBuilder addViaJsonPath(String jsonPath, String key,  Object value) throws Exception {
+        DocumentContext doc = JsonPath.parse(jsonObject.toString()).put(jsonPath, key, value);
+        String js = new GsonBuilder().create().toJsonTree(doc.json()).getAsJsonObject().toString();
+        jsonObject = new JSONObject(js);
         return this;
     }
 
-    public AllObjTypesBuilder add(String key_parent, String name, Object value) throws Exception {
-        String[] keys = key_parent.split("//|");
-
-        Object obj = jsonObject;
-
-        for (String key: keys){
-            obj = getRequiredObject(key, obj);
-        }
-
+    public AllObjTypesBuilder updateViaJsonPath(String jsonPath, Object value) throws Exception {
+        DocumentContext doc = JsonPath.parse(jsonObject.toString()).set(jsonPath, value);
+        String js = new GsonBuilder().create().toJsonTree(doc.json()).getAsJsonObject().toString();
+        jsonObject = new JSONObject(js);
         return this;
     }
-
-    private Object getRequiredObject(String key, Object obj) {
-        String[] keyWithFilterValues = key.split("\\{");
-        String keyToFetch = keyWithFilterValues[0];
-
-
-
-        if(isJsonArray(obj)) {
-                getObjFromJsonAry();
-        } else {
-            ((JSONObject)obj).opt(keyToFetch);
-        }
-    }
-
-
-    private Object getObjFromJsonAry(String key) {
-
-    }
-
-    private Object getObjFromJsonObj(String key) {
-
-    }
-
-
-    private boolean isJsonArray(Object obj) {
-        Object thisObj = new JSONTokener(obj.toString()).nextValue();
-        return thisObj instanceof JSONArray;
-    }
-
-    private void addItemToJson(Object jObj, String key, Object value) throws Exception {
-        JSONObject jObjInstance;
-        JSONArray jArrInstance;
-
-        if(isJsonArray(jObj)) {
-            jArrInstance = (JSONArray) jObj;
-            jArrInstance.put(value);
-        } else {
-            jObjInstance = (JSONObject) jObj;
-            jObjInstance.put(key, value);
-        }
-    }
-
 }

@@ -2,21 +2,19 @@ package testcore.api.modules;
 
 import agent.IAgent;
 import central.Configuration;
-import com.jayway.jsonpath.JsonPath;
-import io.restassured.response.Response;
+
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
-import org.testng.Assert;
 import testcore.api.BaseApi;
 import testcore.api.Builders.AllObjTypesBuilder;
-import testcore.api.Builders.CitizenAuthTokenBuilder;
-import testcore.api.Builders.CitizenComplaintCreationBuilder;
-import utils.APIUtils;
-
-import java.util.HashMap;
 import java.util.Map;
 
 public class AllObjTypes extends BaseApi {
+
+    /*
+      THIS CLASS HAS DETAILS ABOUT ACCESSING BUILDER CLASS, ADDING NEW OBJECTS, UPDATING EXISTING OBJECTS, UPDATING
+      OBJECTS BASED ON GIVEN JSON PATH CONDITION
+    */
 
     public AllObjTypes(Configuration config, IAgent agent, Map<String, String> testData) throws Exception {
         super(config, agent, testData);
@@ -35,10 +33,30 @@ public class AllObjTypes extends BaseApi {
 
         AllObjTypesBuilder builder = new AllObjTypesBuilder();
 
+        //After initializing, json is built using builder pattern
+
+        /*
+        *
+         {
+            "firstName": "John",
+            "address": {
+                "state": "NY",
+                "postalCode": 12121
+            },
+            "phoneNumbers": [{
+                "type": "home",
+                "number": "123-111"
+            }, {
+                "type": "fax",
+                "number": "123-222"
+            }]
+        }
+        * */
+
         builder.add("lastName", "Smith");
         builder.add("age", 25);
 
-        //Output of json up to this level - created using the builder pattern,
+        //Json value after adding lastName and age,
         /*
         * {
             "firstName": "John",
@@ -83,7 +101,7 @@ public class AllObjTypes extends BaseApi {
                                 .put("card"))
                 ));
 
-        //Output of json up at this level
+        //Json value after adding business and buyers
         /*
                     * {
                 "firstName": "John",
@@ -124,7 +142,53 @@ public class AllObjTypes extends BaseApi {
                 }]
             }*/
 
-        builder.add("business|car{brand:Toyota}", "type", "mobile");
+        builder.updateViaJsonPath("$.phoneNumbers[?(@.type=='home')].type", "updateCheck");
+        builder.addViaJsonPath("$.phoneNumbers[?(@.type=='fax')]", "newKey", "newVal");
+
+        /* Json value after updating and adding values using JsonPath
+        * {
+                "firstName": "John",
+                "address": {
+                    "state": "NY",
+                    "postalCode": 12121
+                },
+                "phoneNumbers": [{
+                    "type": "updateCheck",
+                    "number": "123-111"
+                }, {
+                    "type": "fax",
+                    "number": "123-222",
+                    "newKey": "newVal"
+                }],
+                "lastName": "Smith",
+                "age": 25,
+                "business": [{
+                    "type": "vehicle",
+                    "car": {
+                        "brand": "Toyota",
+                        "model": ["Prius", "Camray"],
+                        "quantity": 2
+                    }
+                }, {
+                    "type": "vehicle",
+                    "bike": {
+                        "brand": "Yamaha",
+                        "model": [{
+                            "new": "FZ",
+                            "old": "FZS"
+                        }],
+                        "quantity": 5
+                    }
+                }],
+                "buyers": [{
+                    "online": [],
+                    "offline": ["cash", "card"]
+                }]
+            }
+        * */
+
+
+        builder.readRequiredObjectValues(builder.build().toString(), "$.phoneNumbers[?(@.type=='fax')].newKey");
 
         return thisClass();
     }
