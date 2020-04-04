@@ -11,11 +11,9 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
-import org.testng.SkipException;
 import org.testng.annotations.*;
 import testcore.api.modules.AllObjTypes;
-import testcore.api.modules.CreateCitizenAuthToken;
-import testcore.api.modules.User;
+import testcore.api.modules.CreateCitizenComplaint;
 import testcore.pages.*;
 import utils.DataTable;
 
@@ -23,7 +21,6 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,8 +101,8 @@ public class SupportTest {
 	}
 
 
-	public CreateCitizenAuthToken apiInitialize() throws Exception {
-		return new CreateCitizenAuthToken(this.conf, this.agent, this.testData);
+	public CreateCitizenComplaint apiInitialize() throws Exception {
+		return new CreateCitizenComplaint(this.conf, this.agent, this.testData);
 	}
 
 	public AllObjTypes allObjTypes() throws Exception {

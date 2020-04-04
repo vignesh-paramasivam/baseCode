@@ -13,7 +13,7 @@ import utils.APIUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CreateCitizenAuthToken extends BaseApi {
+public class CreateCitizenComplaint extends BaseApi {
 
     //Headers
     private String origin = "https://egov-micro-qa.egovernments.org";
@@ -23,7 +23,7 @@ public class CreateCitizenAuthToken extends BaseApi {
     private String accept = "application/json, text/plain, */*";
     private String authority = "egov-micro-qa.egovernments.org";
 
-    public CreateCitizenAuthToken(Configuration config, IAgent agent, Map<String, String> testData) throws Exception {
+    public CreateCitizenComplaint(Configuration config, IAgent agent, Map<String, String> testData) throws Exception {
         super(config, agent, testData);
     }
 
@@ -32,11 +32,11 @@ public class CreateCitizenAuthToken extends BaseApi {
         return BaseApi.class.getSimpleName();
     }
 
-    private CreateCitizenAuthToken thisClass() throws Exception {
-        return new CreateCitizenAuthToken(getConfig(), getAgent(), getTestData());
+    private CreateCitizenComplaint thisClass() throws Exception {
+        return new CreateCitizenComplaint(getConfig(), getAgent(), getTestData());
     }
 
-    public CreateCitizenAuthToken generateAuthToken() throws Exception {
+    public CreateCitizenComplaint generateAuthToken() throws Exception {
 
         HashMap<String, String> headers = new HashMap<String, String>() {{
             put("origin", origin);
@@ -65,7 +65,7 @@ public class CreateCitizenAuthToken extends BaseApi {
     }
 
 
-    public CreateCitizenAuthToken createComplaint() throws Exception {
+    public CreateCitizenComplaint createComplaint() throws Exception {
 
         HashMap<String, String> headers = new HashMap<String, String>() {{
             put("origin", origin);
@@ -79,12 +79,8 @@ public class CreateCitizenAuthToken extends BaseApi {
 
         CitizenComplaintCreationBuilder builder = new CitizenComplaintCreationBuilder();
 
-        builder.add("RequestInfo", "authToken", getTestData().get("access_token"));
-        builder.add("services", "source", "web");
-        //Refer todo-1 : only identifying 1st object as of now. Here, key is null/ not considered as the value is added as a object in array
-        builder.add("actionInfo|media", "", "mediaVal");
-
-        builder.add("services|addressDetail{landmark:123}", "testMe", "testVal");
+        builder.updateViaJsonPath("$.RequestInfo.authToken", getTestData().get("access_token"));
+        builder.updateViaJsonPath("$.services[0].source", "web");
 
         Response response = APIUtils.post(builder.getEndPoint(), builder.build().toString(), headers);
 
