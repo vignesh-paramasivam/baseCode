@@ -5,6 +5,7 @@ import central.Configuration;
 
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
+import org.testng.Assert;
 import testcore.api.BaseApi;
 import testcore.api.Builders.AllObjTypesBuilder;
 import java.util.Map;
@@ -58,7 +59,7 @@ public class AllObjTypes extends BaseApi {
 
         //Json value after adding lastName and age,
         /*
-        * {
+        {
             "firstName": "John",
             "address": {
                 "state": "NY",
@@ -74,15 +75,15 @@ public class AllObjTypes extends BaseApi {
             "lastName": "Smith",
             "age": 25
         }
-                *
-        * */
+
+        */
 
         builder.add("business", new JSONArray()
                 .put(new JSONObject()
                         .put("type", "vehicle")
                         .put("car", new JSONObject()
                                 .put("brand", "Toyota")
-                                .put("model", new JSONArray().put("Prius").put("Camray"))
+                                .put("model", new JSONArray().put("Prius").put("Camry"))
                                 .put("quantity", 2))
                 )
                 .put(new JSONObject()
@@ -103,7 +104,7 @@ public class AllObjTypes extends BaseApi {
 
         //Json value after adding business and buyers
         /*
-                    * {
+           {
                 "firstName": "John",
                 "address": {
                     "state": "NY",
@@ -122,7 +123,7 @@ public class AllObjTypes extends BaseApi {
                     "type": "vehicle",
                     "car": {
                         "brand": "Toyota",
-                        "model": ["Prius", "Camray"],
+                        "model": ["Prius", "Camry"],
                         "quantity": 2
                     }
                 }, {
@@ -140,10 +141,11 @@ public class AllObjTypes extends BaseApi {
                     "online": [],
                     "offline": ["cash", "card"]
                 }]
-            }*/
+            }
+         */
 
         builder.updateViaJsonPath("$.phoneNumbers[?(@.type=='home')].type", "updateCheck");
-        builder.addViaJsonPath("$.phoneNumbers[?(@.type=='fax')]", "newKey", "newVal");
+        builder.addViaJsonPath("$.phoneNumbers[?(@.type=='fax')]", "isFax", true);
 
         /* Json value after updating and adding values using JsonPath
         * {
@@ -166,7 +168,7 @@ public class AllObjTypes extends BaseApi {
                     "type": "vehicle",
                     "car": {
                         "brand": "Toyota",
-                        "model": ["Prius", "Camray"],
+                        "model": ["Prius", "Camry"],
                         "quantity": 2
                     }
                 }, {
@@ -187,8 +189,8 @@ public class AllObjTypes extends BaseApi {
             }
         * */
 
-
-        builder.readRequiredObjectValues(builder.build().toString(), "$.phoneNumbers[?(@.type=='fax')].newKey");
+        boolean isFax = (boolean) ((net.minidev.json.JSONArray) builder.readRequiredObjectValues(builder.build().toString(), "$.phoneNumbers[?(@.type=='fax')].isFax")).get(0);
+        Assert.assertEquals(isFax, true);
 
         return thisClass();
     }
